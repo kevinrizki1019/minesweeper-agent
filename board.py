@@ -18,7 +18,6 @@ class Board:
         with open(filename) as f:
             self.size, self.bomb_num, *raw_bomb_cord = f.read().split('\n')
             self.size = int(self.size)
-            print(self.size, "wooooooooooooooooooooooooy")
             self.bomb_num = int(self.bomb_num)
             for raw_cord in raw_bomb_cord:
                 cord_list = raw_cord.split(',')
@@ -76,9 +75,13 @@ class Board:
         return self.matrix[y][x] == 0
     
     def put_flag(self, x, y):
-        self.flag_cord.append(Cord(x, y))
-        self.matrix_revealed[y][x] = 'F'
-    
+        if not self.is_revealed(x, y):
+            self.flag_cord.append(Cord(x, y))
+            self.matrix_revealed[y][x] = 'F'
+
+    def is_revealed(self, x, y):
+        return self.matrix_revealed[y][x] != ' '
+
     def bomb_num_around(self, x, y):
         return self.matrix[y][x]
     
@@ -101,7 +104,7 @@ class Board:
         self.matrix_revealed[y][x] = self.matrix[y][x]
         self.cord_revealed_num += 1
         
-        if self.bomb_num_around(x, y) == 0:
+        if self.is_safe(x, y):
             # Reveal adjacent cord
             around = [[-1, -1], [0, -1], [-1, 0], [1, 1], [0, 1], [1, 0], [1, -1], [-1, 1]]
             for cord in around:
@@ -111,12 +114,19 @@ class Board:
 board = Board()
 board.load_file('test.txt')
 win = False
+gameover = False
 
 while True:
     board.print_board_revealed()
-    board.print_board_all()
-    cord = input('open coordinat (ex: 1 2): ').split(' ')
-    win, gameover = board.open_cord(int(cord[0]), int(cord[1]))
+    inp = input('open coordinat (ex:o 1 2): ').split(' ')
+    command = inp[0]
+    x, y = int(inp[1]), int(inp[2])
+
+    if command == 'o':
+        win, gameover = board.open_cord(x, y)
+    elif command == 'f':
+        board.put_flag(x, y)
+
     if gameover:
         break
 
