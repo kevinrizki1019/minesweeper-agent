@@ -21,11 +21,14 @@ if __name__ == "__main__":
             continue
 
         agent.prepare_facts_rules(board)
-        agent.inference()
-        
-        inp = input('open coordinat (ex:o 1 2): ').split(' ')
-        command = inp[0]
-        x, y = int(inp[1]), int(inp[2])
+        next_move_x, next_move_y = agent.inference()
+        print("Next move choosen by agent: open", next_move_x, next_move_y)
+
+        command = 'o'
+        # x, y = int(inp[1]), int(inp[2])
+        x, y = next_move_x, next_move_y
+
+        inp = input('Press enter to continue ')
 
         if command == 'o':
             win, gameover = board.open_cord(x, y)

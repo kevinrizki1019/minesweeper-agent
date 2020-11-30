@@ -1,5 +1,6 @@
 from itertools import combinations
 from clips import *
+import re
 
 class Agent:
 
@@ -27,11 +28,23 @@ class Agent:
         self.env.build(rule)
 
     def inference(self):
+        for agenda in self.env._agenda.activations():
+            print(agenda)
         self.env.run()
+        
+        next_move_x = 0
+        next_move_y = 0
         for fact in self.env.facts():
             print(fact)
+            if re.search(r'.not-bomb.', fact.__str__()):
+                next_move_x = int(fact.__str__()[-4])
+                next_move_y = int(fact.__str__()[-2])
+                
+        self.decide_next_move()
         self.reset()
-    
+
+        return next_move_x, next_move_y
+
     def reset(self):
         self.env.clear()
         self.env = Environment()
@@ -58,6 +71,7 @@ class Agent:
                     edge_blocks.append((x, y))
         
         around = [[-1, -1], [0, -1], [-1, 0], [1, 1], [0, 1], [1, 0], [1, -1], [-1, 1]]
+
         for x, y in edge_blocks:
             # Get unrevealed blocks around
             unrevealeds = []
@@ -82,11 +96,11 @@ class Agent:
                     lhs = ""
                     for bomb in bombs:
                         lhs += f"(is-bomb {bomb[0]} {bomb[1]})\n"
-
+                    
                     rhs = "" 
                     for bomb in not_bombs:
                         rhs += f"(assert (not-bomb {bomb[0]} {bomb[1]}))\n"
-                    
+
                     rule = f"""
                     (defrule R{self.rule_num}
                         {lhs}
@@ -96,3 +110,14 @@ class Agent:
                     """
                     self.assert_rule(rule)
                     self.rule_num += 1
+
+    def decide_next_move(self):
+        self.env.run()
+
+        r = re.compile("not-bomb")
+        # not_bombs = list(filter(r.match, self.env.facts()))
+        # for not_bomb in not_bombs:
+        #     print(not_bomb)
+
+        self.reset()
+        

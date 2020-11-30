@@ -57,10 +57,14 @@ class Board:
         print('----------------------------------')
     
     def print_board_revealed(self):
-        for row in self.matrix_revealed:
+        for i in range(len(self.matrix)-1):
+            print(i, end=" ")
+        print(len(self.matrix)-1)
+        print()
+        for i,row in enumerate (self.matrix_revealed):
             for x in row:
                 print(x, end='|') 
-            print()
+            print("  ",i)
         print('----------------------------------')
 
     def is_bomb(self, x, y):
