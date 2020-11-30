@@ -105,7 +105,7 @@ class Board:
             return False, True
 
         self.reveal_cord(x, y)
-        if (self.cord_revealed_num == self.size^2-self.bomb_num):
+        if (self.cord_revealed_num == self.size**2-self.bomb_num):
             return True, True
 
         return False, False  
