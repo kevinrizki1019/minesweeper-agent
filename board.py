@@ -66,27 +66,33 @@ class Board:
     def is_cord_valid(self, x, y):
         return (-1 < x < self.size) and (-1 < y < self.size)
 
-    # return true if value equal zero
+    # return true if is a bomb
     def is_bomb(self, x, y):
         return self.matrix[y][x] == 'b'
     
+    # return true if value equal zero
     def is_safe(self, x, y):
         return self.matrix[y][x] == 0
     
+    # return true if is a flag
     def is_flag(self, x, y):
         return self.matrix_revealed[y][x] == 'F'
     
+    # put a flag in a coordinate
     def put_flag(self, x, y):
         if not self.is_revealed(x, y):
             self.flag_cord.append(Cord(x, y))
             self.matrix_revealed[y][x] = 'F'
 
+    # return true if cord already open
     def is_revealed(self, x, y):
         return self.matrix_revealed[y][x] != ' ' and self.matrix_revealed[y][x] != 'F' 
 
+    # return value of a cord 
     def bomb_num_around(self, x, y):
         return self.matrix[y][x]
-    
+
+    # return num of a flag around this cord
     def flag_num_around(self, x, y):
         num = 0
         around = [[-1, -1], [0, -1], [-1, 0], [1, 1], [0, 1], [1, 0], [1, -1], [-1, 1]]
@@ -96,9 +102,11 @@ class Board:
                     num += 1
         return num
     
+    # get terminal view of a tile
     def get_revealed_value(self, x, y):
         return self.matrix_revealed[y][x]
     
+    # open a choosen cord
     def open_cord(self, x, y):
         if (self.is_bomb(x, y)):
             self.matrix_revealed[x][y] = "B"
@@ -111,6 +119,7 @@ class Board:
 
         return False, False  
 
+    # open a choosen cord recursive
     def reveal_cord(self, x, y):
         if not self.is_cord_valid(x, y) or self.matrix_revealed[y][x] != ' ':
             return

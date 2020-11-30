@@ -35,8 +35,8 @@ class Agent:
         # run
         self.env.run()
     
-        next_move_x = 0
-        next_move_y = 0
+        next_move_x = -1
+        next_move_y = -1
 
         # Print facts
         print("List agent facts:")

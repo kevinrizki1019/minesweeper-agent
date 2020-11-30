@@ -33,6 +33,12 @@ if __name__ == "__main__":
 
         agent.prepare_facts_rules(board)
         next_move_x, next_move_y = agent.inference(board)
+
+        if(next_move_x == -1 and next_move_y==-1):
+            print("NP-Complete Problem. Agent Fail Decide Next Move")
+            print()
+            break
+
         print("Next move choosen by agent: open", next_move_x, next_move_y)
 
         command = 'o'
