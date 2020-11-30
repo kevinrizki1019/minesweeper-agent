@@ -11,6 +11,7 @@ example:
 `python main.py test.txt`
 
 input_file format example:
+```
 10
 8
 0, 6
@@ -21,6 +22,7 @@ input_file format example:
 5, 6
 6, 2
 7, 8
+```
 * The first row is the size of the board which is 10 * 10
 * The second row is the number of bomb which is 8
 * The next eight lines are a list of bomb coordinates
