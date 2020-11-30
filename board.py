@@ -1,7 +1,8 @@
 from cord import Cord
 
 class Board:
-
+    # Board Representation
+    # matrix contain value each cord, matrix_revealed for terminal view
     def __init__(self):
         self.matrix = None
         self.matrix_revealed = None
@@ -9,6 +10,7 @@ class Board:
         self.bomb_cord = []
         self.flag_cord = []
     
+    # Read setup game from file filename
     def load_file(self, filename):
         with open(filename) as f:
             self.size, self.bomb_num, *raw_bomb_cord = f.read().split('\n')
@@ -22,6 +24,7 @@ class Board:
         
         self.build_matrix()
     
+    # Build matrix value of each tile
     def build_matrix(self):
         # setup
         self.matrix = [[0 for i in range(self.size)] for i in range(self.size)]
@@ -46,16 +49,7 @@ class Board:
                             bomb_num += 1
                 self.matrix[i][j] = bomb_num
 
-    def is_cord_valid(self, x, y):
-        return (-1 < x < self.size) and (-1 < y < self.size)
-
-    def print_board_all(self):
-        for row in self.matrix:
-            for x in row:
-                print(x, end='|') 
-            print()
-        print('----------------------------------')
-    
+    # print board to terminal
     def print_board_revealed(self):
         for i in range(len(self.matrix)-1):
             print(i, end=" ")
@@ -68,6 +62,11 @@ class Board:
         print('----------------------------------')
         print()
 
+    # return true if cord in board's range
+    def is_cord_valid(self, x, y):
+        return (-1 < x < self.size) and (-1 < y < self.size)
+
+    # return true if value equal zero
     def is_bomb(self, x, y):
         return self.matrix[y][x] == 'b'
     
