@@ -48,7 +48,6 @@ if __name__ == "__main__":
             board.put_flag(x, y)
 
         if gameover:
-            print("enter here")
             break
 
 
