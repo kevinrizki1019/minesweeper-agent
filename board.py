@@ -66,6 +66,7 @@ class Board:
                 print(x, end='|') 
             print("  ",i)
         print('----------------------------------')
+        print()
 
     def is_bomb(self, x, y):
         return self.matrix[y][x] == 'b'
@@ -101,6 +102,7 @@ class Board:
     
     def open_cord(self, x, y):
         if (self.is_bomb(x, y)):
+            self.matrix_revealed[x][y] = "B"
             print('Game over')
             return False, True
 

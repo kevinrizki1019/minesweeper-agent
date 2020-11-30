@@ -27,19 +27,27 @@ class Agent:
     def assert_rule(self, rule):
         self.env.build(rule)
 
-    def inference(self):
+    def inference(self, board):
+        print("List agent matchs:")
         for agenda in self.env._agenda.activations():
             print(agenda)
+        print()
+
         self.env.run()
-        
+    
         next_move_x = 0
         next_move_y = 0
+
+        print("List agent facts:")
         for fact in self.env.facts():
             print(fact)
             if re.search(r'.not-bomb.', fact.__str__()):
                 next_move_x = int(fact.__str__()[-4])
                 next_move_y = int(fact.__str__()[-2])
-                
+            if re.search(r'is-bomb', fact.__str__()):
+                board.put_flag(int(fact.__str__()[-4]), int(fact.__str__()[-2]))
+        print()
+
         self.decide_next_move()
         self.reset()
 
